@@ -8,54 +8,55 @@ import java.io.InputStream;
 
 
 public class OutputFile {
-
 	Scanner scanner = new Scanner(System.in); 
+
+
+	public void registerOutput(Registers regs){
 	
-	public void registerOutput(List<Registers> register)
-	{
+	
 		try{
 			System.out.println("Please choose a name for your register file:");
 			String fileName = scanner.nextLine(); 
 		
 			fileName = fileName.concat(".txt"); 
-		
+			
 			File registerFile = new File(fileName);
 		
 			if (!registerFile.exists()) {
-				registerFile.createNewFile();
+					registerFile.createNewFile();
 			}
+			
 			
 			FileWriter fw = new FileWriter(registerFile.getAbsoluteFile()); 
 			BufferedWriter bw = new BufferedWriter(fw);
 			
-			String intTitle = ""; 
 			String fpTitle = "";
-			String intData = "";
 			String fpData = ""; 
 			
-			for(int i; i < 32; i++)
-			{
-				intTitle = intTitle.concat("R" + i + "  "); 
-				fpTitle = fpTitle.concat("F" + i + "  "); 
-				// intData = intData.concat( + "  "); there should be a difference between int and fp
-				// fpData = fpData.concat( + "  ");   designed. add those in once you get there. 
+			for(int i = 0; i < 32; i++){
+				if(regs.getFPInit(i))
+				{
+				fpTitle = fpTitle.concat(regs.getFPName(i) + "    "); 
+				fpData = fpData.concat(regs.getFPValue(i) + "  ");   			
+				}
 			}
-			bw.write(intTitle);
-			bw.write(intData);
-			bw.write(""); 
+		
 			bw.write(fpTitle);
+			bw.newLine(); 
 			bw.write(fpData);
 			bw.close();
 			
 			System.out.println("Register file complete"); 
 		
 		} 
+		
 		catch(IOException e){
-			
+		System.out.println(e.getMessage());
 		}
+
 	}
 	
-	public void timingOutput(List<Instructions> instructions)
+	public void timingOutput(List<Instructions> instructions, int finalCC)
 	{
 		try{
 			System.out.println("Please choose a name for your timing diagram file:"); 
@@ -72,24 +73,46 @@ public class OutputFile {
 			FileWriter fw = new FileWriter(timingFile.getAbsoluteFile()); 
 			BufferedWriter bw = new BufferedWriter(fw);
 
-			String instCount = "";
-			for(int i = 0; i < instructions.getinstCount(); i++)
+			String instCount = "    ";
+			for(int i = 0; i < instructions.size(); i++)
 			{
 				int j = i + 1; 
 				instCount = instCount.concat("I#" + j + "  "); 
 			}
 			
-			//double for loop
-			//first for all clock cycles
-			//second to see if each instruction has something in it. 
-			//for(int i = 0; i < instructions.clockCycleCount(); i++)
-			//{
-				
-				
-		///	}
-		} 
-		catch(IOException e){
+			bw.write(instCount);
+			bw.newLine(); 
+
+			for(int i = 0; i < finalCC; i++)
+			{			
+				String ccTracker = "";
+					int l = i + 1;
+					ccTracker = ccTracker.concat("C#" + l + "  ");
+					for(int j = 0; j < instructions.size(); j++)
+					{
+						for(int k = 0; k < instructions.get(j).getPipelineCount().size(); k++)
+						{
+							if(instructions.get(j).getPipelineCount().get(k) == i)
+							{
+								String newInstruct = instructions.get(j).getInstructName().get(k);
+								  ccTracker = ccTracker + "  " + newInstruct + "  ";  
+
+							}
+						}	
+					
+					}
+					bw.write(ccTracker); 
+					bw.newLine(); 
+
+				}
+			bw.close();
 			
+			System.out.println("Timing file complete"); 
+
+		} 
+	
+	catch(IOException e){
+		System.out.println(e.getMessage());
 		}
 		
 	}
