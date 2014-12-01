@@ -102,7 +102,6 @@ public class StallCalculator {
 			}
 			if(pl1Location > (pl2Location))
 			{
-				System.out.println(pl2 + pl1Location + "  " + pl1 + pl2Location + "  "); 
 				doTouch = pl1Location - pl2Location; 
 			}
 		

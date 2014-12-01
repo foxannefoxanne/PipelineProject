@@ -5,8 +5,6 @@ import java.io.InputStream;
 public class Main {
 	
 	
-	static boolean hasComponents = false; 
-	static boolean correctInput = true; 
 
 	/*
 	 * Main file to initiate program
@@ -26,11 +24,10 @@ public class Main {
 			
 			readFile(newData, fileName); 
 
-			if(hasComponents && correctInput)
-			{
-				newData.stallFinder();
-				newData.outputConstructor();
-			} 
+			
+			newData.stallFinder();
+			newData.outputConstructor();
+			
 		}
 		catch(IOException e){
 			System.out.println(e.getMessage());
@@ -55,37 +52,37 @@ public class Main {
 			
 			//start I-REGISTER input
 			if(ints.equals("I-REGISTERS")){ 		
-				while(reader.hasNext() && correctInput){
+				while(reader.hasNext()){
 					String intInfo = reader.next();
 
 					//start FP-Register input
 					if(intInfo.equals("FP-REGISTERS")){
-			    		while(reader.hasNext() && correctInput){
+			    		while(reader.hasNext()){
 			    		   String fpInfo = reader.next(); 
 
 			    		   //start memory input
 			    		   if(fpInfo.equals("MEMORY")){
-			    			   while(reader.hasNext() && correctInput){
+			    			   while(reader.hasNext()){
 			    			   String memInfo = reader.next(); 
 
 			    			   //start code input
 			    				if(memInfo.equals("CODE")){
-			    				   while(reader.hasNext() && correctInput){
-					    			   hasComponents = true; 
+			    				   while(reader.hasNext()){
+					    			   
 			    					   String instruction = reader.next();
 					
 			    					   //process load instruction
 					    			   if(instruction.equals("L.D")){
 					   					   String resultValue = reader.next();
 					   					   String memPull = reader.next(); 
-					   					   correctInput = newData.loadCreator(resultValue, memPull); 
+					   					    newData.loadCreator(resultValue, memPull); 
 					   				   }
 					    			
 					    			   //process store instructions
 					    			   else if(instruction.equals("S.D")){
 					    				  String memSaver = reader.next();
 					    				  String saveValue = reader.next(); 
-					    				  correctInput = newData.storeCreator(memSaver,saveValue);
+					    				  newData.storeCreator(memSaver,saveValue);
 					    			   }
 					    			   
 					    			   //process add instructions
@@ -94,8 +91,7 @@ public class Main {
 					    				   String resultValue = reader.next();
 					    				   String adderOne = reader.next();
 					   					   String adderTwo = reader.next();
-					    					   
-					   					   correctInput = newData.addCreator(resultValue, adderOne, adderTwo);
+					    				newData.addCreator(resultValue, adderOne, adderTwo);
 					   				   }
 					    			 //process subtract instructions
 					    			   else if(instruction.equals("SUB.D"))
@@ -103,8 +99,7 @@ public class Main {
 					    				   String resultValue = reader.next();
 					    				   String subOne = reader.next();
 					    				   String subTwo = reader.next();
-					    					   
-					    				   correctInput = newData.subCreator(resultValue, subOne, subTwo);
+					    				 newData.subCreator(resultValue, subOne, subTwo);
 					    			   }
 					    			 //process multiply instructions
 					    			   else if(instruction.equals("MUL.D"))
@@ -112,33 +107,32 @@ public class Main {
 					    				   String resultValue = reader.next(); 
 					    				   String multOne = reader.next();
 					    				   String multTwo = reader.next(); 
-					    					   
-					    				   correctInput =newData.mulCreator(resultValue, multOne, multTwo); 
+					    				newData.mulCreator(resultValue, multOne, multTwo); 
 					    					   
 					    			   }
 					    			   else
 					    			   {
 					    				   System.out.println("You have entered an incorrect instruction name. Please review your input file."); 
-					    				   correctInput = false; 
+					    		
 					    			   }
 					    		   }
 					   		   }
 			    				   
 			    			   else{
 			    			   String memData = reader.next();
-			    			   correctInput = newData.memoryCreator(memInfo, memData);
+			    			   newData.memoryCreator(memInfo, memData);
 			       		    } 
 			       	      }
 			    	   }
 			       else{
 			    	   String fpData = reader.next(); 
-			   		   correctInput = newData.floatingPointCreator(fpInfo, fpData);
+			   		   newData.floatingPointCreator(fpInfo, fpData);
 			    	    }
 			    	  }
 			      	} 
 				else{
 		    		String intData = reader.next();
-			    	correctInput = newData.integerCreator(intInfo, intData); 
+			    	newData.integerCreator(intInfo, intData); 
 		    	}
 			}				
 	     }

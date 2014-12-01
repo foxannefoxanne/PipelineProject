@@ -10,7 +10,7 @@ public class InstructionList {
 	 */
 	public InstructionList()
 	{
-		instructionList = new ArrayList(); 
+		instructionList = new ArrayList<Instructions>(); 
 	}
 	
 	/*
