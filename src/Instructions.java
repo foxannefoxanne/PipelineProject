@@ -2,37 +2,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Instructions {
-  
+
+	//instruction data
+	private String instName;
+	private String resultValue; 
 	
-	String instName;
-	String resultValue; 
-	
-	String math1; 
-	String math2; 
+	private String math1; 
+	private String math2; 
 	
 	
-	String memoryPull;
+	private String memoryPull;
 	
-	List<String> pipelineName;
-	List<Integer> pipelineValue; 
+	private List<String> pipelineName;
+	private List<Integer> pipelineValue; 
 	
 	int totalCycle; 
 	
+	/*
+     *   Constructor. Initiate lists.   
+	 */  
 	public Instructions(){
-				
 		pipelineName = new ArrayList<String>();
 		pipelineValue = new ArrayList<Integer>();  
 		totalCycle = 0; 
 	}
 	
-	public void setLoader(String input1, String input2)
-	{
+	/*
+     *   Creates new loader 
+	 */  
+	public void setLoader(String input1, String input2){
 	    instName = "L.D";
 	    resultValue = input1;
 	    memoryPull = input2;
-	    	    
 	}
 	
+	/*
+     *   Creates new storer
+     */  
 	public void setStorer(String input1, String input2)
 	{
 	    instName = "S.D"; 
@@ -41,7 +47,9 @@ public class Instructions {
 	    
 	}
 	
-	
+	/*
+     *   Creates new adder
+     */  
 	public void setAdder(String result, String add1, String add2)
 	{
 	    instName = "ADD.D";
@@ -51,6 +59,9 @@ public class Instructions {
 	    
 	}
 	
+	/*
+     *   Create new subtractor
+     */  
 	public void setSubtractor(String result, String sub1, String sub2)
 	{
 	    instName = "SUB.D"; 
@@ -59,7 +70,9 @@ public class Instructions {
 	    math2 = sub2;
 	    
 	}
-	
+	/*
+     *   Create new multiplier
+     */  
 	public void setMultiplier(String result, String mul1,  String mul2)
 	{
 	    instName = "MUL.D"; 
@@ -70,48 +83,67 @@ public class Instructions {
 	}
 	
 	
-	public String getName()
-	{
+	/*
+     *   Return name of instruction. 
+     */  
+	public String getName(){
 		return instName; 
 	}
-	public String getFirstMath()
-	{
+	
+	/*
+     *   Return name of first operand instruction. 
+     */  
+	public String getFirstMath(){
 		return math1;
 	}
 	
-	public String getSecondMath()
-	{
+	/*
+     *   Return name of second operand instruction. 
+     */  
+	public String getSecondMath(){
 		return math2;
 	}
 	
 
-	public String getMemPull()
-	{
+	/*
+     *   Return name of memory pull (for store and load)
+     */  
+	public String getMemPull(){
 		return memoryPull;
 	}
 	
-	public String getResultValue()
-	{
+	/*
+     *   Return name of result. 
+     */  
+	public String getResultValue(){
 		return resultValue; 
 	}
 	
+	/*
+     *   Return instruction list. 
+     */  
 	public List<String> getInstructName(){
-	
 		return pipelineName;
 	}
 	
+	/*
+     *   Return name of instruction count. 
+     */  
 	public List<Integer> getPipelineCount(){
-		
 		return pipelineValue;
 	}
 	
-	public int getTotalCycle()
-	{
+	/*
+     *   Return total clock cycles. 
+     */  
+	public int getTotalCycle(){
 		return totalCycle; 
 	}
 	
 
-	
+	/*
+     *   Sets up pipeline for five cycle store/load instruction 
+     */  
 	public void setPipelineListLoadStore(int stalls, int clockCycle)
 	{
 		
@@ -120,6 +152,7 @@ public class Instructions {
 	    pipelineName.add("IF");
 	    pipelineValue.add(clockCycle); 
 	    clockCycle++;
+	    //checks for stalls
 	    if(stalls != 0)
 	    {
 	    	for(int i = 0; i < stalls; i++)
@@ -141,7 +174,7 @@ public class Instructions {
 	    pipelineName.add("WB"); 
 	    pipelineValue.add(clockCycle); 
 	    clockCycle++;
-	    totalCycle = clockCycle; 
+	    
 	    totalCycle = stalls + 5; 
 
 	}
@@ -154,6 +187,7 @@ public class Instructions {
 	    pipelineName.add("IF");
 	    pipelineValue.add(clockCycle); 
 	    clockCycle++;
+	    //checks for stalls
 	    if(stalls != 0)
 	    {
 	    	for(int i = 0; i < stalls; i++)
@@ -166,7 +200,8 @@ public class Instructions {
 	    pipelineName.add("ID"); 
 	    pipelineValue.add(clockCycle); 
 	    clockCycle++;
-	    for(int i = 1; i < 7; i++)
+	    //iterates throug seven M files
+	    for(int i = 0; i < 7; i++)
 	    {
 	    	int j = i + 1; 
 	    	String mult = "M" + j; 
@@ -180,7 +215,7 @@ public class Instructions {
 	    pipelineName.add("WB");
 	    pipelineValue.add(clockCycle); 
 	    clockCycle++;
-	    totalCycle = stalls + 10; 
+	    totalCycle = stalls + 11; 
 
 	}
 	
@@ -192,6 +227,7 @@ public class Instructions {
 	    pipelineName.add("IF");
 	    pipelineValue.add(clockCycle); 
 	    clockCycle++;
+	    //checks for stalls
 	    if(stalls != 0)
 	    {
 	    	for(int i = 0; i < stalls; i++)
@@ -204,7 +240,8 @@ public class Instructions {
 	    pipelineName.add("ID"); 
 	    pipelineValue.add(clockCycle); 
 	    clockCycle++;
-	    for(int i = 1; i < 5; i++)
+	    //iterates through 4 add executions. 
+	    for(int i = 0; i < 4; i++)
 	    {
 	    	int j = i + 1; 
 	    	String adder = "A" + j; 
